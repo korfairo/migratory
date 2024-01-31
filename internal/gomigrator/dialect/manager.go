@@ -6,5 +6,5 @@ type QueryManager interface {
 	InsertMigration(schemaName, tableName string) string
 	DeleteMigration(schemaName, tableName string) string
 	ListMigrations(schemaName, tableName string) string
-	SelectLastMigrationId(schemaName, tableName string) string
+	SelectLastMigrationID(schemaName, tableName string) string
 }

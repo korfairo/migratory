@@ -48,6 +48,7 @@ func TestSQLPreparerPrepare(t *testing.T) {
 				sourcePath: "testdata/02_tmp_migration.sql",
 			},
 			createTestFile: func(t *testing.T, files *tmpFiles) {
+				t.Helper()
 				data := "-- +migrate up\n" +
 					"SELECT COUNT(1);\n" +
 					"-- +migrate down\n" +
@@ -67,6 +68,7 @@ func TestSQLPreparerPrepare(t *testing.T) {
 				sourcePath: "testdata/03_tmp_migration.sql",
 			},
 			createTestFile: func(t *testing.T, files *tmpFiles) {
+				t.Helper()
 				data := "-- +migrate up no_transaction\n" +
 					"SELECT COUNT(1);\n" +
 					"-- +migrate down\n" +
@@ -110,6 +112,7 @@ type tmpFiles struct {
 }
 
 func (tf *tmpFiles) Create(t *testing.T, path string, data string) *os.File {
+	t.Helper()
 	tf.mu.Lock()
 	defer tf.mu.Unlock()
 
@@ -125,6 +128,7 @@ func (tf *tmpFiles) Create(t *testing.T, path string, data string) *os.File {
 }
 
 func (tf *tmpFiles) RemoveAll(t *testing.T) {
+	t.Helper()
 	tf.mu.Lock()
 	defer tf.mu.Unlock()
 

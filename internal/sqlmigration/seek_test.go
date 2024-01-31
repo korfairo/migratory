@@ -31,6 +31,7 @@ func TestParseMigrationFileName(t *testing.T) {
 		"no underscore": {fileName: "2.sql", wantID: 0, wantName: "", wantErr: ErrNoSeparator},
 	}
 	for name, test := range tests {
+		test := test
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			gotID, gotMigrationName, err := ParseMigrationFileName(test.fileName)
@@ -115,6 +116,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 	}
 	for name, test := range tests {
+		test := test
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			ctrl := gomock.NewController(t)

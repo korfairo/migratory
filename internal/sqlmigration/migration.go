@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io/fs"
 
-	"io/fs"
-
 	"github.com/korfairo/migratory/internal/gomigrator"
 )
 

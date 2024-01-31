@@ -38,12 +38,12 @@ func status(dir, schema, table string) error {
 	ctx := context.Background()
 	migrator, err := gomigrator.New("postgres", schema, table)
 	if err != nil {
-		return fmt.Errorf("failed to create migrator: %s", err)
+		return fmt.Errorf("failed to create migrator: %w", err)
 	}
 
 	db, err := sql.Open("postgres", config.DBString)
 	if err != nil {
-		return fmt.Errorf("could not open database: %s", err)
+		return fmt.Errorf("could not open database: %w", err)
 	}
 
 	defer func() {
@@ -55,12 +55,12 @@ func status(dir, schema, table string) error {
 
 	migrations, err := sqlmigration.SeekMigrations(dir, nil)
 	if err != nil {
-		return fmt.Errorf("could not find migrations in directory %s: %s", dir, err)
+		return fmt.Errorf("could not find migrations in directory %s: %w", dir, err)
 	}
 
 	migrationStatuses, err := migrator.GetStatus(ctx, migrations, db)
 	if err != nil {
-		return fmt.Errorf("failed to GetStatus(...): %s", err)
+		return fmt.Errorf("failed to GetStatus(...): %w", err)
 	}
 
 	printStatus(migrationStatuses)
@@ -79,7 +79,7 @@ func printStatus(migrationStatuses []gomigrator.MigrationResult) {
 
 	for _, ms := range migrationStatuses {
 		_, err = fmt.Fprintf(w, "%d\t%s\t%t\t%v\t\n",
-			ms.Id, ms.Name, !ms.AppliedAt.IsZero(), ms.AppliedAt.Format(time.DateTime))
+			ms.ID, ms.Name, !ms.AppliedAt.IsZero(), ms.AppliedAt.Format(time.DateTime))
 		if err != nil {
 			fmt.Println("failed to print status string")
 			os.Exit(1)

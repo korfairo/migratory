@@ -98,15 +98,15 @@ func isEmpty(line string) bool {
 	return strings.TrimSpace(line) == ""
 }
 
-func ParseMigration(r io.Reader) (*ParsedMigration, error) {
+func ParseMigration(r io.Reader) (*ParsedMigration, error) { //nolint:all
 	pm := &ParsedMigration{}
 
 	var buf bytes.Buffer
 	scanner := bufio.NewScanner(r)
 	scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 
-	statementStarted := false
-	statementEnded := false
+	var statementStarted bool
+	var statementEnded bool
 	currentDirection := directionNone
 
 	for scanner.Scan() {
@@ -116,7 +116,7 @@ func ParseMigration(r io.Reader) (*ParsedMigration, error) {
 			continue
 		}
 
-		if isCommand(line) {
+		if isCommand(line) { //nolint:all
 			cmd, err := parseCommand(line)
 			if err != nil {
 				return nil, err
@@ -171,7 +171,7 @@ func ParseMigration(r io.Reader) (*ParsedMigration, error) {
 		}
 
 		if (!statementStarted && endsWithSemicolon(line)) || statementEnded {
-			switch currentDirection {
+			switch currentDirection { //nolint:all
 			case directionUp:
 				pm.UpStatements = append(pm.UpStatements, buf.String())
 

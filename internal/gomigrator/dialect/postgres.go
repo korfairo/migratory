@@ -35,7 +35,7 @@ func (p *Postgres) ListMigrations(schemaName, tableName string) string {
 	return fmt.Sprintf(q, schemaName, tableName)
 }
 
-func (p *Postgres) SelectLastMigrationId(schemaName, tableName string) string {
+func (p *Postgres) SelectLastMigrationID(schemaName, tableName string) string {
 	q := `SELECT id FROM %s.%s ORDER BY id DESC LIMIT 1`
 	return fmt.Sprintf(q, schemaName, tableName)
 }

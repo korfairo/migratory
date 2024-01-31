@@ -1,10 +1,6 @@
-name: Go
+name: Migratory
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: push
 
 jobs:
 
@@ -22,4 +18,4 @@ jobs:
         run: go build -v ./...
 
       - name: Test
-        run: go test -v ./...
+        run: go test -v -race -count 100 ./...

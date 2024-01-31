@@ -125,7 +125,7 @@ func RedoContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) error {
 }
 
 type MigrationResult struct {
-	Id        int64
+	ID        int64
 	Name      string
 	IsApplied bool
 	AppliedAt time.Time
@@ -156,7 +156,7 @@ func GetStatusContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) ([]M
 	migrationResults := make([]MigrationResult, 0, len(results))
 	for _, r := range results {
 		migrationResults = append(migrationResults, MigrationResult{
-			Id:        r.Id,
+			ID:        r.ID,
 			Name:      r.Name,
 			IsApplied: !r.AppliedAt.IsZero(),
 			AppliedAt: r.AppliedAt,

@@ -57,12 +57,12 @@ func up(dir, schema, table string, force bool) (int, error) {
 	ctx := context.Background()
 	migrator, err := gomigrator.New("postgres", schema, table)
 	if err != nil {
-		return 0, fmt.Errorf("failed to create migrator: %s", err)
+		return 0, fmt.Errorf("failed to create migrator: %w", err)
 	}
 
 	db, err := sql.Open("postgres", config.DBString)
 	if err != nil {
-		return 0, fmt.Errorf("could not open database: %s", err)
+		return 0, fmt.Errorf("could not open database: %w", err)
 	}
 
 	defer func() {
@@ -74,12 +74,12 @@ func up(dir, schema, table string, force bool) (int, error) {
 
 	migrations, err := sqlmigration.SeekMigrations(dir, nil)
 	if err != nil {
-		return 0, fmt.Errorf("could not find migrations in directory %s: %s", dir, err)
+		return 0, fmt.Errorf("could not find migrations in directory %s: %w", dir, err)
 	}
 
 	appliedCount, err := migrator.Up(ctx, migrations, db, force)
 	if err != nil {
-		return appliedCount, fmt.Errorf("failed to execute migration: %s", err)
+		return appliedCount, fmt.Errorf("failed to execute migration: %w", err)
 	}
 
 	return appliedCount, nil

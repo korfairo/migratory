@@ -31,6 +31,7 @@ func TestEndsWithSemicolon(t *testing.T) {
 	}
 
 	for name, test := range tests {
+		test := test
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			got := endsWithSemicolon(test.line)
@@ -92,6 +93,7 @@ func TestParseSplitStatements(t *testing.T) {
 	}
 
 	for name, test := range tests {
+		test := test
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			migration, err := ParseMigration(strings.NewReader(test.sql))

@@ -14,7 +14,7 @@ import (
 type GoMigrateFn func(ctx context.Context, tx *sql.Tx) error
 
 func AddMigration(up, down GoMigrateFn) {
-	_, fileName, _, _ := runtime.Caller(1)
+	_, fileName, _, _ := runtime.Caller(1) //nolint:all
 	executor := newGoExecutor(up, down)
 	addGoMigration(fileName, executor)
 }
@@ -22,7 +22,7 @@ func AddMigration(up, down GoMigrateFn) {
 type GoMigrateNoTxFn func(ctx context.Context, db *sql.DB) error
 
 func AddMigrationNoTx(up, down GoMigrateNoTxFn) {
-	_, fileName, _, _ := runtime.Caller(1)
+	_, fileName, _, _ := runtime.Caller(1) //nolint:all
 	executorNoTx := newGoExecutorNoTx(up, down)
 	addGoMigrationNoTx(fileName, executorNoTx)
 }

@@ -35,12 +35,12 @@ func init() {
 func getDBVersion(schema, table string) (int64, error) {
 	migrator, err := gomigrator.New("postgres", schema, table)
 	if err != nil {
-		return 0, fmt.Errorf("could not create migrator: %s", err)
+		return 0, fmt.Errorf("could not create migrator: %w", err)
 	}
 
 	db, err := sql.Open("postgres", config.DBString)
 	if err != nil {
-		return 0, fmt.Errorf("could not open database: %s", err)
+		return 0, fmt.Errorf("could not open database: %w", err)
 	}
 
 	defer func() {
@@ -52,7 +52,7 @@ func getDBVersion(schema, table string) (int64, error) {
 
 	version, err := migrator.GetDBVersion(context.Background(), db)
 	if err != nil {
-		return 0, fmt.Errorf("failed to GetDBVersion(...): %s", err)
+		return 0, fmt.Errorf("failed to GetDBVersion(...): %w", err)
 	}
 
 	return version, nil

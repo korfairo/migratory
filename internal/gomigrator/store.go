@@ -15,7 +15,7 @@ type Store interface {
 	CreateMigrationsTable(ctx context.Context, db DB) error
 	InsertMigration(ctx context.Context, db DB, migrationName string, id int64) error
 	DeleteMigration(ctx context.Context, db DB, id int64) error
-	SelectLastId(ctx context.Context, db DB) (int64, error)
+	SelectLastID(ctx context.Context, db DB) (int64, error)
 	ListMigrations(ctx context.Context, db DB) ([]MigrationResult, error)
 }
 
@@ -26,7 +26,7 @@ type DB interface {
 }
 
 type MigrationResult struct {
-	Id        int64
+	ID        int64
 	Name      string
 	AppliedAt time.Time
 }
@@ -66,8 +66,7 @@ func (s migrationStore) MigrationsTableExists(ctx context.Context, db DB) (bool,
 	row := db.QueryRowContext(ctx, q)
 
 	var exists bool
-	err := row.Scan(&exists)
-	if err != nil {
+	if err := row.Scan(&exists); err != nil {
 		return false, fmt.Errorf("failed to scan row: %w", err)
 	}
 
@@ -94,8 +93,8 @@ func (s migrationStore) DeleteMigration(ctx context.Context, db DB, id int64) er
 
 var ErrNoRows = errors.New("no rows in migrations table")
 
-func (s migrationStore) SelectLastId(ctx context.Context, db DB) (int64, error) {
-	q := s.queryManager.SelectLastMigrationId(s.schemaName, s.tableName)
+func (s migrationStore) SelectLastID(ctx context.Context, db DB) (int64, error) {
+	q := s.queryManager.SelectLastMigrationID(s.schemaName, s.tableName)
 	row := db.QueryRowContext(ctx, q)
 
 	var id int64
@@ -131,7 +130,7 @@ func (s migrationStore) ListMigrations(ctx context.Context, db DB) ([]MigrationR
 			return nil, fmt.Errorf("failed to scan migration result: %w", err)
 		}
 		migrations = append(migrations, MigrationResult{
-			Id:        id,
+			ID:        id,
 			Name:      name,
 			AppliedAt: appliedAt,
 		})

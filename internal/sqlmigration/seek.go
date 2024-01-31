@@ -67,7 +67,7 @@ func SeekMigrations(dir string, fs FileSystem) (gomigrator.Migrations, error) {
 	}
 
 	sort.Slice(migrations, func(i, j int) bool {
-		return migrations[i].Id() < migrations[j].Id()
+		return migrations[i].ID() < migrations[j].ID()
 	})
 
 	return migrations, nil

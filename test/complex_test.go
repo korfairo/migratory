@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package test
 
 import (
@@ -21,7 +24,7 @@ var dsn = flag.String("dsn", "", "")
 var migrationsTable = "go_migrations"
 
 const (
-	lastTestMigrationId int64 = 3
+	lastTestMigrationID int64 = 3
 	testMigrationsCount int   = 3
 )
 
@@ -50,7 +53,7 @@ func TestGoMigrations(t *testing.T) {
 	// checking db version
 	dbVersion, err := migratory.GetDBVersion(db)
 	require.NoError(t, err, "migratory.GetDBVersion(...) error")
-	require.Int64(t, dbVersion, lastTestMigrationId, "dbVersion doesn't match the last migration ID")
+	require.Int64(t, dbVersion, lastTestMigrationID, "dbVersion doesn't match the last migration ID")
 
 	// checking status and number of rows in migrations table
 	results, err := migratory.GetStatus(db)
@@ -60,23 +63,23 @@ func TestGoMigrations(t *testing.T) {
 	require.Int(t, len(results), migrationsCount,
 		"migratory.GetStatus(...) results must be equal to migrationsCount")
 
-	// ensure all migrations are applied and maxID is equal to lastTestMigrationId
-	var maxId int64
+	// ensure all migrations are applied and maxID is equal to lastTestMigrationID
+	var maxID int64
 	var appliedAt time.Time
 	for _, result := range results {
 		require.Bool(t, result.IsApplied, true, "all migrations must be applied")
 
-		if maxId < result.Id {
-			maxId = result.Id
+		if maxID < result.ID {
+			maxID = result.ID
 			appliedAt = result.AppliedAt
 		}
 	}
 
-	require.Int64(t, maxId, dbVersion, "incorrect max ID in migration results")
+	require.Int64(t, maxID, dbVersion, "incorrect max ID in migration results")
 	require.Bool(t, appliedAt.IsZero(), false, "last migration time must not be zero")
 
 	dbMaxID, dbAppliedAt := getLastMigrationResult(t, db)
-	require.Int64(t, maxId, dbMaxID,
+	require.Int64(t, maxID, dbMaxID,
 		"migratory.GetStatus() maxID is not equal to the last migration ID got from DB")
 	require.Time(t, appliedAt, dbAppliedAt,
 		"migratory.GetStatus() appliedAt is not equal to the last migration applied_at got from DB")
@@ -111,6 +114,7 @@ func getLastMigrationResult(t *testing.T, db *sql.DB) (id int64, at time.Time) {
 	q := "SELECT id, applied_at FROM %s ORDER BY id DESC LIMIT 1;"
 	rows, err := db.Query(fmt.Sprintf(q, migrationsTable))
 	require.NoError(t, err, "db.Query(...) last id error")
+	require.NoError(t, rows.Err(), "rows.Err() error")
 	defer rows.Close()
 
 	for rows.Next() {
@@ -136,6 +140,7 @@ func getTableCount(t *testing.T, db *sql.DB) (n int) {
 }
 
 func setupTestDB(t *testing.T) *sql.DB {
+	t.Helper()
 	if *dsn == "" {
 		t.Fatalf("database dsn is empty, pass it with flag -dsn")
 	}
@@ -152,6 +157,7 @@ func setupTestDB(t *testing.T) *sql.DB {
 }
 
 func resetPublicSchema(t *testing.T, db *sql.DB) {
+	t.Helper()
 	_, err := db.Exec("DROP SCHEMA IF EXISTS public CASCADE;")
 	require.NoError(t, err, "db.Exec(...) drop schema")
 

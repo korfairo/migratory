@@ -3,8 +3,6 @@ package gomigrator
 import (
 	"testing"
 
-	"testing"
-
 	"github.com/korfairo/migratory/internal/require"
 )
 
@@ -38,11 +36,11 @@ func TestFindMissingMigrations(t *testing.T) {
 			args: args{
 				migrations: allMigrations,
 				results: []MigrationResult{
-					{Id: 1},
-					{Id: 2},
-					{Id: 3},
-					{Id: 4},
-					{Id: 5},
+					{ID: 1},
+					{ID: 2},
+					{ID: 3},
+					{ID: 4},
+					{ID: 5},
 				},
 			},
 			wantMissing: Migrations{
@@ -58,15 +56,15 @@ func TestFindMissingMigrations(t *testing.T) {
 			args: args{
 				migrations: allMigrations,
 				results: []MigrationResult{
-					{Id: 1},
-					{Id: 2},
-					{Id: 3},
-					{Id: 4},
-					{Id: 5},
-					{Id: 6},
-					{Id: 7},
-					{Id: 8},
-					{Id: 9},
+					{ID: 1},
+					{ID: 2},
+					{ID: 3},
+					{ID: 4},
+					{ID: 5},
+					{ID: 6},
+					{ID: 7},
+					{ID: 8},
+					{ID: 9},
 				},
 			},
 			wantMissing: Migrations{
@@ -78,15 +76,15 @@ func TestFindMissingMigrations(t *testing.T) {
 			args: args{
 				migrations: allMigrations,
 				results: []MigrationResult{
-					{Id: 2},
-					{Id: 3},
-					{Id: 4},
-					{Id: 5},
-					{Id: 6},
-					{Id: 7},
-					{Id: 8},
-					{Id: 9},
-					{Id: 10},
+					{ID: 2},
+					{ID: 3},
+					{ID: 4},
+					{ID: 5},
+					{ID: 6},
+					{ID: 7},
+					{ID: 8},
+					{ID: 9},
+					{ID: 10},
 				},
 			},
 			wantMissing: Migrations{
@@ -98,10 +96,10 @@ func TestFindMissingMigrations(t *testing.T) {
 			args: args{
 				migrations: allMigrations,
 				results: []MigrationResult{
-					{Id: 2},
-					{Id: 3},
-					{Id: 5},
-					{Id: 8},
+					{ID: 2},
+					{ID: 3},
+					{ID: 5},
+					{ID: 8},
 				},
 			},
 			wantMissing: Migrations{
@@ -138,14 +136,14 @@ var allMigrations = Migrations{
 }
 
 var allResults = []MigrationResult{
-	{Id: 1},
-	{Id: 2},
-	{Id: 3},
-	{Id: 4},
-	{Id: 5},
-	{Id: 6},
-	{Id: 7},
-	{Id: 8},
-	{Id: 9},
-	{Id: 10},
+	{ID: 1},
+	{ID: 2},
+	{ID: 3},
+	{ID: 4},
+	{ID: 5},
+	{ID: 6},
+	{ID: 7},
+	{ID: 8},
+	{ID: 9},
+	{ID: 10},
 }

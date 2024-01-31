@@ -10,9 +10,9 @@ import (
 
 type Config struct {
 	Directory string `yaml:"directory"`
-	DBString  string `yaml:"db_string"`
-	Schema    string `yaml:"db_schema"`
-	Table     string `yaml:"db_table"`
+	DBString  string `yaml:"dsn"`
+	Schema    string `yaml:"schema"`
+	Table     string `yaml:"table"`
 }
 
 var defaultConfig = Config{

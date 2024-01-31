@@ -13,12 +13,12 @@ func rollback(dir, schema, table string, redo bool) error {
 	ctx := context.Background()
 	migrator, err := gomigrator.New("postgres", schema, table)
 	if err != nil {
-		return fmt.Errorf("failed to create migrator: %s", err)
+		return fmt.Errorf("failed to create migrator: %w", err)
 	}
 
 	db, err := sql.Open("postgres", config.DBString)
 	if err != nil {
-		return fmt.Errorf("could not open database: %s", err)
+		return fmt.Errorf("could not open database: %w", err)
 	}
 
 	defer func() {
@@ -30,11 +30,11 @@ func rollback(dir, schema, table string, redo bool) error {
 
 	migrations, err := sqlmigration.SeekMigrations(dir, nil)
 	if err != nil {
-		return fmt.Errorf("could not find migrations in directory %s: %s", dir, err)
+		return fmt.Errorf("could not find migrations in directory %s: %w", dir, err)
 	}
 
 	if err = migrator.Down(ctx, migrations, db, redo); err != nil {
-		return fmt.Errorf("failed to execute migration: %s", err)
+		return fmt.Errorf("failed to execute migration: %w", err)
 	}
 
 	return nil

@@ -160,7 +160,7 @@ func (m *Migration) ChooseExecutor() (noTx bool, err error) {
 	return m.executors.NoTx(), nil
 }
 
-func (m *Migration) Id() int64 {
+func (m *Migration) ID() int64 {
 	return m.id
 }
 
