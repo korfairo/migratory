@@ -4,8 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/korfairo/migratory/internal/gomigrator"
 	"io/fs"
+
+	"io/fs"
+
+	"github.com/korfairo/migratory/internal/gomigrator"
 )
 
 type sqlExecutor struct {
@@ -21,7 +24,8 @@ func newSQLExecutor(up, down []string) sqlExecutor {
 		statements: statements{
 			up:   up,
 			down: down,
-		}}
+		},
+	}
 }
 
 func (s sqlExecutor) Up(ctx context.Context, tx *sql.Tx) error {
@@ -41,7 +45,8 @@ func newSQLExecutorNoTx(up, down []string) sqlExecutorNoTx {
 		statements: statements{
 			up:   up,
 			down: down,
-		}}
+		},
+	}
 }
 
 func (s sqlExecutorNoTx) Up(ctx context.Context, db *sql.DB) error {

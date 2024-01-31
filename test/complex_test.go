@@ -11,7 +11,6 @@ import (
 	"github.com/korfairo/migratory/internal/gomigrator"
 	"github.com/korfairo/migratory/internal/require"
 	_ "github.com/korfairo/migratory/test/testdata"
-
 	_ "github.com/lib/pq"
 )
 

@@ -4,10 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/korfairo/migratory/internal/gomigrator"
-	"github.com/korfairo/migratory/internal/sqlmigration"
 	"os"
 
+	"github.com/korfairo/migratory/internal/gomigrator"
+	"github.com/korfairo/migratory/internal/sqlmigration"
 	"github.com/spf13/cobra"
 )
 
@@ -34,7 +34,7 @@ up -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my
 
 		appliedCount, err := up(config.Directory, config.Schema, config.Table, force)
 		if err != nil {
-			fmt.Printf("%d migration(s) applied, an error occured: %s\n", appliedCount, err)
+			fmt.Printf("%d migration(s) applied, an error occurred: %s\n", appliedCount, err)
 			return
 		}
 

@@ -158,7 +158,6 @@ func ParseMigration(r io.Reader) (*ParsedMigration, error) {
 			default:
 				return nil, ErrUnknownCommand
 			}
-
 		}
 
 		if currentDirection == directionNone {

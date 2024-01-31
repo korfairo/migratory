@@ -5,9 +5,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"runtime"
+
 	"github.com/korfairo/migratory/internal/gomigrator"
 	"github.com/korfairo/migratory/internal/sqlmigration"
-	"runtime"
 )
 
 type GoMigrateFn func(ctx context.Context, tx *sql.Tx) error

@@ -1,11 +1,12 @@
 package sqlmigration
 
 import (
-	"github.com/korfairo/migratory/internal/gomigrator"
-	"github.com/korfairo/migratory/internal/require"
 	"os"
 	"sync"
 	"testing"
+
+	"github.com/korfairo/migratory/internal/gomigrator"
+	"github.com/korfairo/migratory/internal/require"
 )
 
 func TestSQLPreparerPrepare(t *testing.T) {
@@ -101,7 +102,6 @@ func TestSQLPreparerPrepare(t *testing.T) {
 			require.Equal(t, got, test.want, "SeekMigrations(...) ExecutorContainer")
 		})
 	}
-
 }
 
 type tmpFiles struct {

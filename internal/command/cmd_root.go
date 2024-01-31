@@ -5,7 +5,6 @@ import (
 	"os"
 
 	cfg "github.com/korfairo/migratory/internal/config"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +13,7 @@ var (
 	config     cfg.Config
 )
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = &cobra.Command{
 	Use:   "migratory",
 	Short: "Migratory is a migration tool and go package",

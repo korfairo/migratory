@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/korfairo/migratory/internal/gomigrator"
-
 	"github.com/spf13/cobra"
 )
 

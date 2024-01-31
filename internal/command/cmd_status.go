@@ -10,7 +10,6 @@ import (
 
 	"github.com/korfairo/migratory/internal/gomigrator"
 	"github.com/korfairo/migratory/internal/sqlmigration"
-
 	"github.com/spf13/cobra"
 )
 

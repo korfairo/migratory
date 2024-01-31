@@ -1,9 +1,10 @@
 package gomigrator
 
 import (
+	"testing"
+
 	"github.com/korfairo/migratory/internal/gomigrator/dialect"
 	"github.com/korfairo/migratory/internal/require"
-	"testing"
 )
 
 func TestNewStore(t *testing.T) {
@@ -43,7 +44,6 @@ func TestNewStore(t *testing.T) {
 			got, err := newStore(test.args.dbDialect, test.args.schemaName, test.args.tableName)
 			require.ErrorIs(t, err, test.wantErr, "newStore(...) error")
 			require.Equal(t, got, test.want, "newStore(...) new store")
-
 		})
 	}
 }

@@ -1,8 +1,11 @@
 package gomigrator
 
 import (
-	"github.com/korfairo/migratory/internal/require"
 	"testing"
+
+	"testing"
+
+	"github.com/korfairo/migratory/internal/require"
 )
 
 func TestFindMissingMigrations(t *testing.T) {
