@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/korfairo/migratory/internal/require"
-	"github.com/korfairo/migratory/internal/sqlmigration/testdata/mocks"
+	"github.com/korfairo/migratory/internal/sqlmigration/testdata/mock"
 )
 
 func TestParseMigrationFileName(t *testing.T) {
@@ -48,13 +48,13 @@ func TestSeekMigrations(t *testing.T) {
 	t.Parallel()
 	tests := map[string]struct {
 		directory string
-		prepare   func(seeker *mocks.MockFileSystem)
+		prepare   func(seeker *mock.MockFileSystem)
 		wantLen   int
 		wantErr   error
 	}{
 		"incorrect path": {
 			directory: "incorrect/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("incorrect/path/").Return(nil, os.ErrNotExist)
 			},
 			wantLen: 0,
@@ -62,7 +62,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 		"glob error": {
 			directory: "correct/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("correct/path/").Return(nil, nil)
 				seeker.EXPECT().Glob("correct/path/*.sql").Return(nil, os.ErrPermission)
 			},
@@ -71,7 +71,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 		"no migrations": {
 			directory: "correct/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("correct/path/").Return(nil, nil)
 				seeker.EXPECT().Glob("correct/path/*.sql").Return([]string{}, nil)
 			},
@@ -80,7 +80,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 		"no separator": {
 			directory: "correct/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("correct/path/").Return(nil, nil)
 				fileNames := []string{"01name.sql"}
 				seeker.EXPECT().Glob("correct/path/*.sql").Return(fileNames, nil)
@@ -90,7 +90,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 		"incorrect id": {
 			directory: "correct/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("correct/path/").Return(nil, nil)
 				fileNames := []string{"0.1_name.sql"}
 				seeker.EXPECT().Glob("correct/path/*.sql").Return(fileNames, nil)
@@ -100,7 +100,7 @@ func TestSeekMigrations(t *testing.T) {
 		},
 		"valid names": {
 			directory: "correct/path/",
-			prepare: func(seeker *mocks.MockFileSystem) {
+			prepare: func(seeker *mock.MockFileSystem) {
 				seeker.EXPECT().Stat("correct/path/").Return(nil, nil)
 				fileNames := []string{
 					"1_create_table.sql",
@@ -120,7 +120,7 @@ func TestSeekMigrations(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			ctrl := gomock.NewController(t)
-			seeker := mocks.NewMockFileSystem(ctrl)
+			seeker := mock.NewMockFileSystem(ctrl)
 
 			if test.prepare != nil {
 				test.prepare(seeker)

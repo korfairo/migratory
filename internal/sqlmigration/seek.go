@@ -20,7 +20,6 @@ var (
 	ErrDirectoryCheck   = errors.New("unable to check directory existence")
 )
 
-//go:generate mockgen -destination=./testdata/mocks/mock_os_fs.go -package=mocks . FileSystem
 type FileSystem interface {
 	Open(name string) (fs.File, error)
 	Stat(name string) (os.FileInfo, error)
