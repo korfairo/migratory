@@ -1,2 +1,2 @@
 # gomigrator
-PostgreSQL migrator
+## minimalistic migration library and CLI tool

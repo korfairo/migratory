@@ -1,0 +1,5 @@
+#file: noinspection Annotator
+directory: [ /path/to/directory]
+db_string = postgres://user:password@localhost:5432/mydb
+db_schema - public
+db_table migrations
