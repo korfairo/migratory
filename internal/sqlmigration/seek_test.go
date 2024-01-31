@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/korfairo/migratory/internal/require"
-	"github.com/korfairo/migratory/test/mock"
+	"github.com/korfairo/migratory/internal/sqlmigration/testdata/mock"
 )
 
 func TestParseMigrationFileName(t *testing.T) {
