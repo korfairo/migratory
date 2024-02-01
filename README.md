@@ -26,13 +26,24 @@ You can also use `.sql` migrations. Set directory with migrations files:
 
 Or use `OptionsFunc` `WithSQLMigrationDir(d string)` in the next commands.
 
-Manage your migrations with:
+Manage your migrations with functions:
+
 ```
 - func Up(db *sql.DB, opts ...OptionsFunc) (n int, err error)
 - func Down(db *sql.DB, opts ...OptionsFunc) error
 - func Redo(db *sql.DB, opts ...OptionsFunc) error
 - func GetStatus(db *sql.DB, opts ...OptionsFunc) ([]MigrationResult, error)
 - func GetDBVersion(db *sql.DB, opts ...OptionsFunc) (int64, error)
+```
+
+Or with your context:
+
+```
+- func UpContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) (n int, err error)
+- func DownContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) error
+- func RedoContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) error
+- func GetStatusContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) ([]MigrationResult, error)
+- func GetDBVersionContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) (int64, error)
 ```
 
 ### As CLI tool
