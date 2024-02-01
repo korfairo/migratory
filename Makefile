@@ -30,7 +30,7 @@ test:
 	go test -race ./internal/...
 
 integration-test: postgres-up
-	go test ./test/ -dsn $(POSTGRES_DSN)
+	go test ./test/ -dsn $(POSTGRES_DSN) -tags integration
 
 postgres-up:
 	$(COMPOSE_ENV) docker compose -f $(COMPOSE_PATH) up -d
