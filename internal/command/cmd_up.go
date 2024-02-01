@@ -22,9 +22,9 @@ If there are migrations in your directory with ID numbers less than the database
 they are considered "dirty migrations". By default, the command will return an error 
 in this case, but you can ignore it with the "–force" flag to apply all missing migrations. 
 Additionally, the command will create the migrations table if it does not already exist.`,
-	Example: `up -c /etc/config.yml
-up -d postgresql://role:password@127.0.0.1:5432/database --dir example/migrations/
-up -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my_migrations_table`,
+	Example: `migratory up -c /etc/config.yml
+migratory up -d postgresql://role:password@127.0.0.1:5432/database --dir example/migrations/
+migratory up -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my_migrations_table`,
 	Run: func(cmd *cobra.Command, args []string) {
 		force, err := cmd.Flags().GetBool("force")
 		if err != nil {

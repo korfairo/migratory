@@ -15,9 +15,9 @@ var createCmd = &cobra.Command{
 Default directory is your current one, pass arg with -d flag to choose another.
 Name of the file matches the format {id}_{name}.sql, where id is a unique number of migration.
 The command writes current UTC time as a migration id, for example: 20060102150405_name.sql`,
-	Example: `create my_migration go
-create my_migration sql
-create my_migration sql -d ./example/migrations`,
+	Example: `migratory create my_migration go
+migratory create my_migration sql
+migratory create my_migration sql -d ./example/migrations`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := create(config.Directory, args[0], args[1]); err != nil {

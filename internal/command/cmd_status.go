@@ -19,9 +19,9 @@ var statusCmd = &cobra.Command{
 	Long: `The "status" command shows table with migration statuses,
 according existing migrations in your directory and in the database migrations table.
 Command creates migrations table if not exists.`,
-	Example: `status -c /etc/config.yml
-status -d postgresql://role:password@127.0.0.1:5432/database --dir example/migrations/
-status -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my_migrations_table`,
+	Example: `migratory status -c /etc/config.yml
+migratory status -d postgresql://role:password@127.0.0.1:5432/database --dir example/migrations/
+migratory status -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my_migrations_table`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := status(config.Directory, config.Schema, config.Table); err != nil {
 			fmt.Printf("unable to get migrations status: %s\n", err)

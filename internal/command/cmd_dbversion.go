@@ -15,9 +15,9 @@ var dbVersionCmd = &cobra.Command{
 	Short: "Shows the DB version (id of the last applied migration",
 	Long: `The "dbversion" command prints the id of the last applied migration 
 from migrations table in your database. Command creates migrations table if not exists.`,
-	Example: `dbversion -c /etc/config.yml
-dbversion -d postgresql://role:password@127.0.0.1:5432/database
-dbversion -d postgresql://role:password@127.0.0.1:5432/database -s my_schema -t my_migrations_table`,
+	Example: `migratory dbversion -c /etc/config.yml
+migratory dbversion -d postgresql://role:password@127.0.0.1:5432/database
+migratory dbversion -d postgresql://role:password@127.0.0.1:5432/database -s my_schema -t my_migrations_table`,
 	Run: func(cmd *cobra.Command, args []string) {
 		version, err := getDBVersion(config.Schema, config.Table)
 		if err != nil {
