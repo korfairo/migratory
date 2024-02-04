@@ -72,27 +72,28 @@ func SeekMigrations(dir string, fs FileSystem) (gomigrator.Migrations, error) {
 	return migrations, nil
 }
 
-const idSeparator = "_"
+const FileNameSeparator = "_"
 
 var (
-	ErrNoSeparator = errors.New("ID separator not found")
-	ErrParseID     = errors.New("unable to parse ID")
+	ErrNoSeparator = errors.New("no separator found in file name")
+	ErrParseID     = errors.New("unable to parse ID in file name")
 )
 
 func ParseMigrationFileName(fileName string) (id int64, migrationName string, err error) {
-	nameWithoutExtension := strings.TrimSuffix(filepath.Base(fileName), filepath.Ext(fileName))
+	base := filepath.Base(fileName)
+	nameWithoutExt := strings.TrimSuffix(base, filepath.Ext(fileName))
 
-	idx := strings.Index(nameWithoutExtension, idSeparator)
-	if idx < 0 {
-		return 0, "", ErrNoSeparator
+	separatorIdx := strings.Index(nameWithoutExt, FileNameSeparator)
+	if separatorIdx < 0 {
+		return -1, "", ErrNoSeparator
 	}
 
-	id, err = strconv.ParseInt(nameWithoutExtension[:idx], 10, 64)
+	id, err = strconv.ParseInt(nameWithoutExt[:separatorIdx], 10, 64)
 	if err != nil {
-		return 0, "", ErrParseID
+		return -1, "", ErrParseID
 	}
 
-	migrationName = nameWithoutExtension[idx+1:]
+	migrationName = nameWithoutExt[separatorIdx+1:]
 
 	return id, migrationName, nil
 }

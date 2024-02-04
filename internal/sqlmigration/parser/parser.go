@@ -1,4 +1,4 @@
-package sqlmigration
+package parser
 
 import (
 	"bufio"
@@ -171,15 +171,10 @@ func ParseMigration(r io.Reader) (*ParsedMigration, error) { //nolint:all
 		}
 
 		if (!statementStarted && endsWithSemicolon(line)) || statementEnded {
-			switch currentDirection { //nolint:all
-			case directionUp:
+			if currentDirection == directionUp {
 				pm.UpStatements = append(pm.UpStatements, buf.String())
-
-			case directionDown:
+			} else {
 				pm.DownStatements = append(pm.DownStatements, buf.String())
-
-			default:
-				panic("impossible state")
 			}
 
 			statementEnded = false
@@ -191,12 +186,12 @@ func ParseMigration(r io.Reader) (*ParsedMigration, error) { //nolint:all
 		return nil, fmt.Errorf("failed to scan strings: %w", err)
 	}
 
-	if buf.Len() > 0 {
-		return nil, ErrNoSemicolon
-	}
-
 	if statementStarted {
 		return nil, ErrStatementNotEnded
+	}
+
+	if buf.Len() > 0 {
+		return nil, ErrNoSemicolon
 	}
 
 	if currentDirection == directionNone {

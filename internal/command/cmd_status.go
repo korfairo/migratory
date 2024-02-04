@@ -23,7 +23,7 @@ Command creates migrations table if not exists.`,
 migratory status -d postgresql://role:password@127.0.0.1:5432/database --dir example/migrations/
 migratory status -d postgresql://role:password@127.0.0.1:5432/database --dir migrations/ -t my_migrations_table`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := status(config.Directory, config.Schema, config.Table); err != nil {
+		if err := status(config.Dir, config.Schema, config.Table); err != nil {
 			fmt.Printf("unable to get migrations status: %s\n", err)
 			os.Exit(1)
 		}
@@ -35,13 +35,7 @@ func init() {
 }
 
 func status(dir, schema, table string) error {
-	ctx := context.Background()
-	migrator, err := gomigrator.New("postgres", schema, table)
-	if err != nil {
-		return fmt.Errorf("failed to create migrator: %w", err)
-	}
-
-	db, err := sql.Open("postgres", config.DBString)
+	db, err := sql.Open("postgres", config.DSN)
 	if err != nil {
 		return fmt.Errorf("could not open database: %w", err)
 	}
@@ -56,6 +50,12 @@ func status(dir, schema, table string) error {
 	migrations, err := sqlmigration.SeekMigrations(dir, nil)
 	if err != nil {
 		return fmt.Errorf("could not find migrations in directory %s: %w", dir, err)
+	}
+
+	ctx := context.Background()
+	migrator, err := gomigrator.New(ctx, db, "postgres", schema, table)
+	if err != nil {
+		return fmt.Errorf("failed to create migrator: %w", err)
 	}
 
 	migrationStatuses, err := migrator.GetStatus(ctx, migrations, db)

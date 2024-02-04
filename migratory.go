@@ -14,8 +14,8 @@ type options struct {
 	migrationType string
 	directory     string
 	dialect       string
-	schemaName    string
-	tableName     string
+	schema        string
+	table         string
 
 	forceUp bool
 }
@@ -38,12 +38,12 @@ func WithSQLMigrationDir(d string) OptionsFunc {
 	return func(o *options) { o.migrationType = MigrationTypeSQL; o.directory = d }
 }
 
-func WithSchemaName(n string) OptionsFunc {
-	return func(o *options) { o.schemaName = n }
+func WithSchema(n string) OptionsFunc {
+	return func(o *options) { o.schema = n }
 }
 
-func WithTableName(n string) OptionsFunc {
-	return func(o *options) { o.tableName = n }
+func WithTable(n string) OptionsFunc {
+	return func(o *options) { o.table = n }
 }
 
 func WithForce() OptionsFunc {
@@ -54,8 +54,8 @@ var defaultOpts = options{
 	migrationType: MigrationTypeGo,
 	dialect:       DialectPostgres,
 	directory:     ".",
-	schemaName:    "public",
-	tableName:     "migrations",
+	schema:        "public",
+	table:         "migrations",
 	forceUp:       false,
 }
 
@@ -63,9 +63,9 @@ func defaultOptions() options {
 	return defaultOpts
 }
 
-func SetSchemaName(s string) { defaultOpts.schemaName = s }
+func SetSchema(s string) { defaultOpts.schema = s }
 
-func SetTableName(s string) { defaultOpts.tableName = s }
+func SetTable(s string) { defaultOpts.table = s }
 
 func SetSQLDirectory(path string) {
 	defaultOpts.migrationType = MigrationTypeSQL
@@ -88,7 +88,7 @@ func Up(db *sql.DB, opts ...OptionsFunc) (n int, err error) {
 
 func UpContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) (n int, err error) {
 	option := applyOptions(opts)
-	migrator, err := gomigrator.New(option.dialect, option.schemaName, option.tableName)
+	migrator, err := gomigrator.New(ctx, db, option.dialect, option.schema, option.table)
 	if err != nil {
 		return 0, err
 	}
@@ -138,7 +138,7 @@ func GetStatus(db *sql.DB, opts ...OptionsFunc) ([]MigrationResult, error) {
 
 func GetStatusContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) ([]MigrationResult, error) {
 	option := applyOptions(opts)
-	migrator, err := gomigrator.New(option.dialect, option.schemaName, option.tableName)
+	migrator, err := gomigrator.New(ctx, db, option.dialect, option.schema, option.table)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func GetDBVersion(db *sql.DB, opts ...OptionsFunc) (int64, error) {
 
 func GetDBVersionContext(ctx context.Context, db *sql.DB, opts ...OptionsFunc) (int64, error) {
 	option := applyOptions(opts)
-	migrator, err := gomigrator.New(option.dialect, option.schemaName, option.tableName)
+	migrator, err := gomigrator.New(ctx, db, option.dialect, option.schema, option.table)
 	if err != nil {
 		return -1, err
 	}
@@ -202,7 +202,7 @@ func getMigrations(migrationType, directory string) (m gomigrator.Migrations, er
 
 func rollback(ctx context.Context, db *sql.DB, redo bool, opts []OptionsFunc) error {
 	option := applyOptions(opts)
-	migrator, err := gomigrator.New(option.dialect, option.schemaName, option.tableName)
+	migrator, err := gomigrator.New(ctx, db, option.dialect, option.schema, option.table)
 	if err != nil {
 		return err
 	}

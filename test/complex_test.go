@@ -37,7 +37,7 @@ func TestGoMigrations(t *testing.T) {
 	})
 
 	// number of applied migrations must be equal to testMigrationsCount
-	appliedCount, err := migratory.Up(db, migratory.WithTableName(migrationsTable))
+	appliedCount, err := migratory.Up(db, migratory.WithTable(migrationsTable))
 	require.NoError(t, err, "migratory.Up(...) error")
 	require.Int(t, appliedCount, testMigrationsCount, "migratory.Up(...) applied migrations count")
 
@@ -48,7 +48,7 @@ func TestGoMigrations(t *testing.T) {
 	}
 
 	// checking migratory default options
-	migratory.SetTableName(migrationsTable)
+	migratory.SetTable(migrationsTable)
 
 	// checking db version
 	dbVersion, err := migratory.GetDBVersion(db)

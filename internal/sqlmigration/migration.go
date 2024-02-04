@@ -7,6 +7,7 @@ import (
 	"io/fs"
 
 	"github.com/korfairo/migratory/internal/gomigrator"
+	"github.com/korfairo/migratory/internal/sqlmigration/parser"
 )
 
 type sqlExecutor struct {
@@ -59,9 +60,9 @@ type QueryExecutor interface {
 	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
 
-func execute(ctx context.Context, dbTx QueryExecutor, statements []string) error {
+func execute(ctx context.Context, executor QueryExecutor, statements []string) error {
 	for _, query := range statements {
-		_, err := dbTx.ExecContext(ctx, query)
+		_, err := executor.ExecContext(ctx, query)
 		if err != nil {
 			return err
 		}
@@ -90,7 +91,7 @@ func (s sqlPreparer) Prepare() (*gomigrator.ExecutorContainer, error) {
 		_ = file.Close()
 	}()
 
-	parsed, err := ParseMigration(file)
+	parsed, err := parser.ParseMigration(file)
 	if parsed == nil || err != nil {
 		return nil, fmt.Errorf("failed to parse migration %s: %w", s.sourcePath, err)
 	}

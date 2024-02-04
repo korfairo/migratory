@@ -1,6 +1,7 @@
-package sqlmigration
+package parser
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,8 +11,8 @@ import (
 )
 
 const (
-	validDirPath   = "testdata/sql-valid/"
-	invalidDirPath = "testdata/sql-invalid/"
+	validDataPath   = "testdata/valid/"
+	invalidDataPath = "testdata/invalid/"
 )
 
 func TestEndsWithSemicolon(t *testing.T) {
@@ -42,13 +43,12 @@ func TestEndsWithSemicolon(t *testing.T) {
 
 func TestParseValid(t *testing.T) {
 	t.Parallel()
-	fileNames := getDirectoryFilenames(t, validDirPath)
-
+	fileNames := getDirectoryFilenames(t, validDataPath)
 	for _, path := range fileNames {
 		file := openFile(t, path)
 
 		_, err := ParseMigration(file)
-		require.NoError(t, err, "ParseMigration(...)")
+		require.NoError(t, err, fmt.Sprintf("ParseMigration(...) must execute without error, file %s", path))
 
 		closeFile(t, file)
 	}
@@ -56,13 +56,12 @@ func TestParseValid(t *testing.T) {
 
 func TestParseInvalid(t *testing.T) {
 	t.Parallel()
-	fileNames := getDirectoryFilenames(t, invalidDirPath)
-
+	fileNames := getDirectoryFilenames(t, invalidDataPath)
 	for _, path := range fileNames {
 		file := openFile(t, path)
 
 		_, err := ParseMigration(file)
-		require.Error(t, err, "ParseMigration(...)")
+		require.Error(t, err, fmt.Sprintf("ParseMigration(...) must execute with error, file %s", path))
 
 		closeFile(t, file)
 	}
@@ -98,9 +97,7 @@ func TestParseSplitStatements(t *testing.T) {
 			t.Parallel()
 			migration, err := ParseMigration(strings.NewReader(test.sql))
 			require.NoError(t, err, "ParseMigration(...)")
-
 			require.Int(t, len(migration.UpStatements), test.upCount, "UpStatements count")
-
 			require.Int(t, len(migration.DownStatements), test.downCount, "DownStatements count")
 		})
 	}
@@ -180,18 +177,14 @@ DROP TABLE users;
 func getDirectoryFilenames(t *testing.T, path string) []string {
 	t.Helper()
 	fileNames, err := filepath.Glob(path + "*.sql")
-	if err != nil {
-		t.Fatalf("failed to get file names in dir %s: %s", path, err)
-	}
+	require.NoError(t, err, fmt.Sprintf("failed to get file names at path %s", path))
 	return fileNames
 }
 
 func openFile(t *testing.T, path string) *os.File {
 	t.Helper()
 	file, err := os.Open(path)
-	if err != nil {
-		t.Fatalf("failed to open file at path %s: %s", path, err)
-	}
+	require.NoError(t, err, fmt.Sprintf("failed to open file at path %s", path))
 	return file
 }
 

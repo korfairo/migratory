@@ -33,19 +33,19 @@ func TestSQLPreparerPrepare(t *testing.T) {
 		},
 		"parseMigration error, empty file": {
 			fields: fields{
-				sourcePath: "testdata/01_tmp_migration.sql",
+				sourcePath: "01_tmp_migration.sql",
 			},
 			createTestFile: func(t *testing.T, files *tmpFiles) {
 				t.Helper()
 				data := ""
-				files.Create(t, "testdata/01_tmp_migration.sql", data)
+				files.Create(t, "01_tmp_migration.sql", data)
 			},
 			want:    nil,
 			wantErr: true,
 		},
 		"valid file": {
 			fields: fields{
-				sourcePath: "testdata/02_tmp_migration.sql",
+				sourcePath: "02_tmp_migration.sql",
 			},
 			createTestFile: func(t *testing.T, files *tmpFiles) {
 				t.Helper()
@@ -53,7 +53,7 @@ func TestSQLPreparerPrepare(t *testing.T) {
 					"SELECT COUNT(1);\n" +
 					"-- +migrate down\n" +
 					"SELECT COUNT(2);"
-				files.Create(t, "testdata/02_tmp_migration.sql", data)
+				files.Create(t, "02_tmp_migration.sql", data)
 			},
 			want: gomigrator.NewExecutorContainer(
 				newSQLExecutor(
@@ -65,7 +65,7 @@ func TestSQLPreparerPrepare(t *testing.T) {
 		},
 		"valid file no transaction": {
 			fields: fields{
-				sourcePath: "testdata/03_tmp_migration.sql",
+				sourcePath: "03_tmp_migration.sql",
 			},
 			createTestFile: func(t *testing.T, files *tmpFiles) {
 				t.Helper()
@@ -73,7 +73,7 @@ func TestSQLPreparerPrepare(t *testing.T) {
 					"SELECT COUNT(1);\n" +
 					"-- +migrate down\n" +
 					"SELECT COUNT(2);"
-				files.Create(t, "testdata/03_tmp_migration.sql", data)
+				files.Create(t, "03_tmp_migration.sql", data)
 			},
 			want: gomigrator.NewExecutorContainerNoTx(
 				newSQLExecutorNoTx(

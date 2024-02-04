@@ -15,10 +15,10 @@ func TestReadConfig(t *testing.T) {
 		"valid config": {
 			path: "testdata/valid.yml",
 			want: &Config{
-				Directory: "/path/to/directory",
-				DBString:  "postgres://user:password@localhost:5432/my_db",
-				Schema:    "public",
-				Table:     "migrations",
+				Dir:    "/path/to/directory",
+				DSN:    "postgres://user:password@localhost:5432/my_db",
+				Schema: "public",
+				Table:  "migrations",
 			},
 			err: nil,
 		},

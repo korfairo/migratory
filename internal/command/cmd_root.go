@@ -37,9 +37,9 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "",
 		"path to yaml config")
 
-	rootCmd.PersistentFlags().StringVar(&config.Directory, "dir", ".",
+	rootCmd.PersistentFlags().StringVar(&config.Dir, "dir", ".",
 		"directory with .sql migration files")
-	rootCmd.PersistentFlags().StringVarP(&config.DBString, "db", "d", "",
+	rootCmd.PersistentFlags().StringVarP(&config.DSN, "db", "d", "",
 		"database connection string")
 	rootCmd.PersistentFlags().StringVarP(&config.Schema, "schema", "s", "public",
 		"name of database schema with migrations table")

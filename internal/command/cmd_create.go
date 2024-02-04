@@ -20,7 +20,7 @@ migratory create my_migration sql
 migratory create my_migration sql -d ./example/migrations`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := create(config.Directory, args[0], args[1]); err != nil {
+		if err := create(config.Dir, args[0], args[1]); err != nil {
 			fmt.Printf("unable to create template: %s\n", err)
 			os.Exit(1)
 		}

@@ -24,8 +24,9 @@ func TestParseMigrationFileName(t *testing.T) {
 		"multiple zeros": {fileName: "000001_new.sql", wantID: 1, wantName: "new", wantErr: nil},
 		"with path":      {fileName: "./migrations/000001_new.sql", wantID: 1, wantName: "new", wantErr: nil},
 
-		"empty version": {fileName: "_name.sql", wantID: 0, wantName: "", wantErr: ErrParseID},
-		"no underscore": {fileName: "2.sql", wantID: 0, wantName: "", wantErr: ErrNoSeparator},
+		"empty string":  {fileName: "", wantID: -1, wantName: "", wantErr: ErrNoSeparator},
+		"empty version": {fileName: "_name.sql", wantID: -1, wantName: "", wantErr: ErrParseID},
+		"no underscore": {fileName: "2.sql", wantID: -1, wantName: "", wantErr: ErrNoSeparator},
 	}
 	for name, test := range tests {
 		test := test

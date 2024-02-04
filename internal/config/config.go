@@ -9,17 +9,17 @@ import (
 )
 
 type Config struct {
-	Directory string `yaml:"directory"`
-	DBString  string `yaml:"dsn"`
-	Schema    string `yaml:"schema"`
-	Table     string `yaml:"table"`
+	Dir    string `yaml:"directory"`
+	DSN    string `yaml:"dsn"`
+	Schema string `yaml:"schema"`
+	Table  string `yaml:"table"`
 }
 
 var defaultConfig = Config{
-	Directory: ".",
-	DBString:  "",
-	Schema:    "public",
-	Table:     "migrations",
+	Dir:    ".",
+	DSN:    "",
+	Schema: "public",
+	Table:  "migrations",
 }
 
 var (
@@ -46,8 +46,8 @@ func ReadConfig(path string) (*Config, error) {
 }
 
 func setDefaultValues(cfg *Config) {
-	if cfg.Directory == "" {
-		cfg.Directory = defaultConfig.Directory
+	if cfg.Dir == "" {
+		cfg.Dir = defaultConfig.Dir
 	}
 
 	if cfg.Schema == "" {
@@ -60,8 +60,8 @@ func setDefaultValues(cfg *Config) {
 }
 
 func expandConfig(cfg *Config) {
-	cfg.Directory = os.ExpandEnv(cfg.Directory)
-	cfg.DBString = os.ExpandEnv(cfg.DBString)
+	cfg.Dir = os.ExpandEnv(cfg.Dir)
+	cfg.DSN = os.ExpandEnv(cfg.DSN)
 	cfg.Schema = os.ExpandEnv(cfg.Schema)
 	cfg.Table = os.ExpandEnv(cfg.Table)
 }

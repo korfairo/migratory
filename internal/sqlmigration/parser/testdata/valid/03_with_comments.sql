@@ -1,3 +1,5 @@
+### temporary migration, see #14721 ###
+
 -- +migrate up
 
 -- This column was added in #14721.
