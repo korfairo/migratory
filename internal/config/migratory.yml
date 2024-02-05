@@ -1,0 +1,4 @@
+directory: /path/to/directory
+dsn: postgres://user:password@localhost:5432/my_db
+schema: public
+table: migrations
